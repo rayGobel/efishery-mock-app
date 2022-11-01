@@ -1,16 +1,6 @@
 import { FC } from 'react';
 
-type Location = {
-  city: string;
-  province: string;
-}
-
-export type Product = {
-  name: string,
-  location: Location,
-  price: number,
-  size: number,
-}
+import Product from '../domain/Product';
 
 type ProductComponent = {
   product: Product,

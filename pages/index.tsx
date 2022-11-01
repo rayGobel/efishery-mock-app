@@ -1,47 +1,7 @@
 import Head from 'next/head';
 import { FC } from 'react';
 import ProductDetail, { Product } from '../components/ProductDetail';
-
-function mockProducts (): Product[] {
-  return [
-    {
-      name: 'SARDEN 22',
-      location: {
-        city: 'SITUBONDO',
-        province: 'JAWA TIMUR',
-      },
-      price: 200000,
-      size: 30
-    },
-    {
-      name: 'Nila',
-      location: {
-        city: 'BANDUNG',
-        province: 'JAWA BARAT',
-      },
-      price: 10000,
-      size: 60
-    },
-    {
-      name: 'Lele',
-      location: {
-        city: 'KOTA TUA',
-        province: 'DKI JAKARTA',
-      },
-      price: 300000,
-      size: 110
-    },
-    {
-      name: 'Udang',
-      location: {
-        city: 'PANDEGLANG',
-        province: 'BANTEN',
-      },
-      price: 300000,
-      size: 50
-    },
-  ];
-};
+import ProductList from '../components/ProductList';
 
 export default function Home() {
   const borderBtm = `border-b-2 border-black`;
@@ -70,11 +30,7 @@ export default function Home() {
         </section>
 
         <section className={contentClass}>
-
-          <div className="flex flex-col gap-y-2">
-            { mockProducts().map((p: Product) => <ProductDetail key={p.name} product={p} />) }
-          </div>
-
+          <ProductList />
         </section>
       </main>
 
