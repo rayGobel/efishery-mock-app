@@ -1,9 +1,54 @@
-import Head from 'next/head'
+import Head from 'next/head';
+import { FC } from 'react';
+import ProductDetail, { Product } from '../components/ProductDetail';
+
+function mockProducts (): Product[] {
+  return [
+    {
+      name: 'SARDEN 22',
+      location: {
+        city: 'SITUBONDO',
+        province: 'JAWA TIMUR',
+      },
+      price: 200000,
+      size: 30
+    },
+    {
+      name: 'Nila',
+      location: {
+        city: 'BANDUNG',
+        province: 'JAWA BARAT',
+      },
+      price: 10000,
+      size: 60
+    },
+    {
+      name: 'Lele',
+      location: {
+        city: 'KOTA TUA',
+        province: 'DKI JAKARTA',
+      },
+      price: 300000,
+      size: 110
+    },
+    {
+      name: 'Udang',
+      location: {
+        city: 'PANDEGLANG',
+        province: 'BANTEN',
+      },
+      price: 300000,
+      size: 50
+    },
+  ];
+};
 
 export default function Home() {
-  const headerClass = `app-header bg-red-50`;
-  const sidebarClass = `app-sidebar bg-green-50 w-2/12`;
-  const contentClass = `app-content bg-cyan-50 w-full`;
+  const borderBtm = `border-b-2 border-black`;
+
+  const headerClass = `app-header flex flex-col gap-y-2 py-2 px-4 ${borderBtm}`;
+  const sidebarClass = `app-sidebar hidden w-2/12`;
+  const contentClass = `app-content w-full py-3`;
   const footerClass = `app-footer bg-orange-50`;
 
   return (
@@ -15,7 +60,8 @@ export default function Home() {
       </Head>
 
       <header className={headerClass}>
-        <h1>Header Title</h1>
+        <h1 className="logo text-2xl font-semibold">EFishery</h1>
+        <h2 className="title text-lg ">Price Lookup</h2>
       </header>
 
       <main className="main-content flex flex-row justify-between">
@@ -24,7 +70,11 @@ export default function Home() {
         </section>
 
         <section className={contentClass}>
-          <h2>Content Title</h2>
+
+          <div className="flex flex-col gap-y-2">
+            { mockProducts().map((p: Product) => <ProductDetail key={p.name} product={p} />) }
+          </div>
+
         </section>
       </main>
 
