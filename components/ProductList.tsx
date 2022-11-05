@@ -1,5 +1,6 @@
-import { FC, MouseEvent } from 'react';
+import { FC, Fragment, MouseEvent, useState, useEffect } from 'react';
 
+import Toolbar, { SortDirection } from './Toolbar';
 import ProductDetail from './ProductDetail';
 import Product from '../domain/Product';
 
@@ -44,27 +45,46 @@ function mockProducts (): Product[] {
   ];
 };
 
+type SortFacet = 'Price' | 'Name' | null;
+
 const ProductList: FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    setProducts(mockProducts());
+  }, []);
+
   const btnStyle = `btn px-4 py-2 w-fit border border-blue-200`;
+  const handleSortByPrice = (sortDirection: SortDirection) => {
 
-  const handleFilterClick = (ev: MouseEvent<HTMLElement>) => {
-    console.log({ ev });
-    ev.preventDefault();
-  };
+    if (sortDirection == '') {
+      setProducts(mockProducts());
+      return;
+    }
 
-  const handleSortClick = (ev: MouseEvent<HTMLElement>) => {
-    console.log({ ev });
-    ev.preventDefault();
+    const sortedProducts = [...products];
+    sortedProducts.sort((pA, pB) => {
+      if (sortDirection == 'Highest') {
+        return pB.price - pA.price;
+      }
+
+      if (sortDirection == 'Lowest') {
+        return pA.price - pB.price;
+      }
+
+      return 0;
+    });
+
+    setProducts(sortedProducts);
   };
 
   return (
-    <div className="flex flex-col gap-y-1" data-testid="product-list">
-      <div className="toolbar px-2 py-1 flex flex-row gap-x-2 place-content-end mb-3">
-        <button className={btnStyle} onClick={handleFilterClick}>Filter</button>
-        <button className={btnStyle} onClick={handleSortClick}>Sort</button>
-      </div>
+    <div className="flex flex-col gap-y-4">
+      <Toolbar onSortByPrice={handleSortByPrice} />
 
-      { mockProducts().map((p: Product) => <ProductDetail key={p.name} product={p} />) }
+      <div className="flex flex-col gap-y-1" data-testid="product-list">
+        { products.map((p: Product) => <ProductDetail key={p.name} product={p} />) }
+      </div>
     </div>
   )
 };
