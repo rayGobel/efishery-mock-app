@@ -20,6 +20,7 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
 
   const handleSortByName = (ev: MouseEvent) => {
     ev.preventDefault();
+    setSortByPrice('');
 
     if (sortByName === 'A-Z') {
       setSortByName('Z-A');
@@ -40,6 +41,7 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
 
   const handleSortByPrice = (ev: MouseEvent<HTMLElement>) => {
     ev.preventDefault();
+    setSortByName('');
 
     if (sortByPrice === 'Highest') {
       if (onSortByPrice) {
@@ -84,7 +86,12 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
 
           <div className="w-full flex flex-col">
             <label htmlFor="product-location">Location</label>
-            <select id="product-location" className="px-2 py-3" onChange={handleLocationFilter}>
+            <select
+              id="product-location"
+              className="px-2 py-3"
+              onChange={handleLocationFilter}
+              data-testid="toolbar-filterby-location"
+            >
               <option value="">select location...</option>
               <option value="SITUBONDO, JAWA TIMUR">SITUBONDO, JAWA TIMUR</option>
               <option value="BANDUNG, JAWA BARAT">BANDUNG, JAWA BARAT</option>
@@ -93,7 +100,11 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
 
           <div className="w-full flex flex-col">
             <label htmlFor="product-size">Size</label>
-            <select id="product-size" className="px-2 py-3">
+            <select
+              id="product-size"
+              className="px-2 py-3"
+              data-testid="toolbar-filterby-size"
+            >
               <option value="20">20</option>
               <option value="200">200</option>
             </select>
@@ -105,11 +116,19 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
           <p className="text-lg font-semibold">Sort</p>
 
           <div className="flex flex-row gap-x-4 ">
-            <button onClick={handleSortByName} className={sortByNameClass}>
+            <button
+              onClick={handleSortByName}
+              className={sortByNameClass}
+              data-testid="toolbar-sortby-name"
+            >
               <p>Name</p>
               <p className="text-md">{sortByName ? `(${sortByName})` : ''}</p>
             </button>
-            <button onClick={handleSortByPrice} className={sortByPriceClass}>
+            <button
+              onClick={handleSortByPrice}
+              className={sortByPriceClass}
+              data-testid="toolbar-sortby-price"
+            >
               <p>Price</p>
               <p className="text-md">{sortByPrice ? `(${sortByPrice})` : ''}</p>
             </button>
@@ -124,6 +143,15 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
             ? (
               <div>
                 <p>({sortByPrice})</p>
+              </div>
+            )
+            : ''
+        }
+        {
+          sortByNameActive
+            ? (
+              <div>
+                <p>({sortByName})</p>
               </div>
             )
             : ''

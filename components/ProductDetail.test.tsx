@@ -1,10 +1,12 @@
+import React from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
-import ProductDetail, { Product } from './ProductDetail';
+import Product from '../domain/Product';
+import ProductDetail from './ProductDetail';
 
-let mockProduct = {
+const mockProduct = {
   name: 'Fish',
   price: 10000,
   location: {
@@ -12,7 +14,7 @@ let mockProduct = {
     province: 'Jakarta'
   },
   size: 60
-};
+} as Product;
 
 describe('<ProductDetail /> Renders', () => {
   it('should have the name and price of product', () => {
@@ -30,8 +32,8 @@ describe('<ProductDetail /> Renders', () => {
   });
 
   it('should call "click" event when product detail is clicked', async () => {
-    let callbackFn = jest.fn();
-    let user = userEvent.setup();
+    const callbackFn = jest.fn();
+    const user = userEvent.setup();
 
     render(
       <ProductDetail product={mockProduct} onClick={callbackFn} />
