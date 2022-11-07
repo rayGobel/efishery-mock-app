@@ -69,22 +69,28 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
     }
   };
 
-  const sortByPriceActive = sortByPrice !== '' ? `border-slate-600 bg-green-200` : ``;
-  const sortByPriceClass = `${sortByPriceActive} border-2 w-full p-2 flex flex-row justify-between`;
+  const defaultBtnClass = `border-2 border-slate-300 w-full p-2 flex flex-row justify-between md:w-36`;
+  const hoverBtnClass = `hover:bg-green-100 hover:text-slate-900`; // only useful on md screen / larger
+  const btnActiveClass = `border-slate-700 bg-green-300`;
 
-  const sortByNameActive = sortByName !== '' ? `border-slate-600 bg-green-200`: ``;
-  const sortByNameClass = `${sortByNameActive} border-2 w-full p-2 flex flex-row justify-between`;
+  const sortByPriceActive = sortByPrice !== '' ? btnActiveClass : ``;
+  const sortByPriceClass = `${sortByPriceActive} ${hoverBtnClass} ${defaultBtnClass}`;
+
+  const sortByNameActive = sortByName !== '' ? btnActiveClass : ``;
+  const sortByNameClass = `${sortByNameActive} ${hoverBtnClass} ${defaultBtnClass}`;
 
   const visibility = isVisible ? '' : 'hidden';
 
+  const mdScreenClass = `md:block md:relative md:flex md:flex-row md:content-center md:border-2 md:py-6 md:px-12 md:w-fit md:justify-evenly md:place-self-center md:gap-x-6`;
+
   return (
     <>
-      <div className={`toolbar absolute z-50 bg-white ${visibility} px-6 py-3 flex flex-col gap-y-4 justify-items-stretch border-b-2 w-full`}>
+      <div className={`toolbar absolute z-50 bg-white ${visibility} px-6 py-3 flex flex-col gap-y-4 justify-items-stretch border-b-2 w-full ${mdScreenClass}`}>
 
-        <div className="filter-section flex flex-col gap-y-2">
-          <p className="text-lg font-semibold">Filter</p>
+        <div className="filter-section flex flex-col gap-y-2 md:w-fit md:flex md:flex-row md:gap-x-4 md:flex-wrap">
+          <p className="text-lg font-semibold md:w-full md:shrink-0">Filter</p>
 
-          <div className="w-full flex flex-col">
+          <div className="w-full flex flex-col md:w-fit">
             <label htmlFor="product-location">Location</label>
             <select
               id="product-location"
@@ -98,7 +104,7 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
             </select>
           </div>
 
-          <div className="w-full flex flex-col">
+          <div className="w-full flex flex-col md:w-fit">
             <label htmlFor="product-size">Size</label>
             <select
               id="product-size"
@@ -112,7 +118,7 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
 
         </div>
 
-        <div className="sort-section flex flex-col gap-y-1">
+        <div className="sort-section flex flex-col gap-y-1 md:w-12/12 md:items-start md:justify-between md:max-w-2xl">
           <p className="text-lg font-semibold">Sort</p>
 
           <div className="flex flex-row gap-x-4 ">
@@ -122,7 +128,7 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
               data-testid="toolbar-sortby-name"
             >
               <p>Name</p>
-              <p className="text-md">{sortByName ? `(${sortByName})` : ''}</p>
+              <p className="text-md md:shrink">{sortByName ? `(${sortByName})` : ''}</p>
             </button>
             <button
               onClick={handleSortByPrice}
@@ -130,14 +136,14 @@ export const Toolbar: FC<ToolbarProps> = (props) => {
               data-testid="toolbar-sortby-price"
             >
               <p>Price</p>
-              <p className="text-md">{sortByPrice ? `(${sortByPrice})` : ''}</p>
+              <p className="text-md md:shrink">{sortByPrice ? `(${sortByPrice})` : ''}</p>
             </button>
           </div>
         </div>
 
-        <button onClick={() => setToolbarVisibility(false)} className="w-fit border px-4 py-2 place-self-end">Close</button>
+        <button onClick={() => setToolbarVisibility(false)} className="w-fit border px-4 py-2 place-self-end md:hidden">Close</button>
       </div>
-      <div className="hidden-toolbar flex flex-row place-self-end items-center gap-x-2 px-4">
+      <div className="hidden-toolbar flex flex-row place-self-end items-center gap-x-2 px-4 md:hidden">
         {
           sortByPriceActive
             ? (

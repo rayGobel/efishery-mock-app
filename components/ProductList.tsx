@@ -82,7 +82,7 @@ const ProductList: FC = () => {
     <div className="flex flex-col gap-y-4">
       <Toolbar onSortByPrice={handleSortByPrice} />
 
-      <div className="flex flex-col gap-y-1" data-testid="product-list">
+      <div className="flex flex-col gap-y-1 md:w-8/12 md:place-self-center" data-testid="product-list">
         { products.map((p: Product) => <ProductDetail key={p.name} product={p} />) }
       </div>
     </div>
