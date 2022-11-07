@@ -1,69 +1,35 @@
-import { FC, Fragment, MouseEvent, useState, useEffect } from 'react';
+import React, { FC, Fragment, MouseEvent, useState, useEffect } from 'react';
 
 import Toolbar, { SortDirection } from './Toolbar';
 import ProductDetail from './ProductDetail';
 import Product from '../domain/Product';
 
-function mockProducts (): Product[] {
-  return [
-    {
-      name: 'SARDEN 22',
-      location: {
-        city: 'SITUBONDO',
-        province: 'JAWA TIMUR',
-      },
-      price: 200000,
-      size: 30
-    },
-    {
-      name: 'Nila',
-      location: {
-        city: 'BANDUNG',
-        province: 'JAWA BARAT',
-      },
-      price: 10000,
-      size: 60
-    },
-    {
-      name: 'Lele',
-      location: {
-        city: 'KOTA TUA',
-        province: 'DKI JAKARTA',
-      },
-      price: 300000,
-      size: 110
-    },
-    {
-      name: 'Udang',
-      location: {
-        city: 'PANDEGLANG',
-        province: 'BANTEN',
-      },
-      price: 300000,
-      size: 50
-    },
-  ];
+type ProductListComponent = FC<{
+  products?: Product[]
+}>
+
+const NoProductFound = () => {
+  return (
+    <p className="place-self-center font-light italic md:text-lg">No product(s) found</p>
+  );
 };
 
-type SortFacet = 'Price' | 'Name' | null;
-
-const ProductList: FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+const ProductList: ProductListComponent = ({ products = [] }) => {
+  const [sortedProducts, setSortedProducts] = useState<Product[]>(products);
 
   useEffect(() => {
-    setProducts(mockProducts());
-  }, []);
+    setSortedProducts(products);
+  }, [products]);
 
-  const btnStyle = `btn px-4 py-2 w-fit border border-blue-200`;
   const handleSortByPrice = (sortDirection: SortDirection) => {
 
     if (sortDirection == '') {
-      setProducts(mockProducts());
+      setSortedProducts(products);
       return;
     }
 
     const sortedProducts = [...products];
-    sortedProducts.sort((pA, pB) => {
+    sortedProducts.sort((pA: Product, pB: Product) => {
       if (sortDirection == 'Highest') {
         return pB.price - pA.price;
       }
@@ -75,7 +41,7 @@ const ProductList: FC = () => {
       return 0;
     });
 
-    setProducts(sortedProducts);
+    setSortedProducts(sortedProducts);
   };
 
   return (
@@ -83,7 +49,11 @@ const ProductList: FC = () => {
       <Toolbar onSortByPrice={handleSortByPrice} />
 
       <div className="flex flex-col gap-y-1 md:w-8/12 md:place-self-center" data-testid="product-list">
-        { products.map((p: Product) => <ProductDetail key={p.name} product={p} />) }
+        {
+          sortedProducts.length
+          ? sortedProducts.map((p: Product) => <ProductDetail key={p.id} product={p} />)
+          : <NoProductFound />
+        }
       </div>
     </div>
   )
